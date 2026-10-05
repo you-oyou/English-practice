@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>英打練習版本一</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Noto+Sans+TC:wght@700;900&display=swap');
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#30251f;font-family:"Noto Sans TC",sans-serif;color:#38261d}
+.machine{width:min(920px,94vw);padding:18px;background:#704a32;border:7px solid #211813;border-radius:24px;box-shadow:0 25px 60px #0009,inset 0 0 0 3px #a6754d}
+.screen{min-height:650px;position:relative;overflow:hidden;padding:55px 25px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:#f5e5b9;border:5px solid #211813;border-radius:12px}
+.screen:before{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,#50321f06 0 2px,transparent 2px 6px)}
+.flower{position:absolute;color:#d66a32;font-size:40px}.one{top:45px;left:65px}.two{top:70px;right:70px}.three{bottom:50px;left:85px}.four{bottom:55px;right:85px}
+.badge{position:relative;padding:10px 18px;color:#fff3cf;background:#d66a32;border:3px solid #38261d;box-shadow:5px 5px #38261d;font-weight:900;letter-spacing:3px;transform:rotate(-2deg)}
+h1{position:relative;margin:32px 0 8px;font-family:"Press Start 2P",monospace;font-size:clamp(27px,5vw,50px);line-height:1.5;text-shadow:4px 4px #d6bd80}
+.subtitle{position:relative;margin:0 0 30px;font-size:17px;font-weight:900;letter-spacing:5px;color:#6b4932}
+.keyboard{position:relative;width:min(680px,92%);padding:18px 20px 22px;background:#b98b5a;border:4px solid #38261d;border-radius:13px;box-shadow:9px 9px #38261d}
+.top{display:flex;justify-content:space-between;margin-bottom:12px;color:#f5e5b9;font-size:10px;font-weight:900;letter-spacing:2px}
+.row{display:flex;gap:6px;margin-bottom:6px}.key{height:43px;flex:1;display:flex;align-items:center;justify-content:center;background:linear-gradient(#f8eac5,#e3ca8d);border:2px solid #38261d;border-radius:5px;font-family:monospace;font-size:15px;font-weight:900;box-shadow:0 4px #694936}.wide{flex:1.55}.wider{flex:2.2}.space{flex:5.5}
+.start{position:relative;margin-top:40px;padding:17px 48px;color:white;background:#d66a32;border:4px solid #38261d;border-radius:8px;font:900 20px "Noto Sans TC",sans-serif;letter-spacing:3px;cursor:pointer;box-shadow:7px 7px #38261d;transition:.12s}
+.start:hover{transform:translate(3px,3px);box-shadow:4px 4px #38261d}.start:active{transform:translate(7px,7px);box-shadow:0 0}
+.status{position:relative;height:20px;margin-top:10px;font-size:13px;font-weight:900;color:#66785a;opacity:0;transition:.2s}.status.show{opacity:1}
+.footer{position:relative;margin-top:18px;font-size:11px;letter-spacing:2px;opacity:.6}
+@media(max-width:650px){.machine{padding:10px;border-width:5px}.screen{min-height:600px;padding:40px 10px}.keyboard{padding:11px}.row{gap:3px;margin-bottom:4px}.key{height:30px;font-size:9px;border-width:1px;box-shadow:0 2px #694936}.top{font-size:7px;margin-bottom:7px}.flower{font-size:25px}.one{left:25px}.two{right:25px}.three{left:30px}.four{right:30px}}
+</style>
+</head>
+<body>
+<div class="machine"><main class="screen">
+<div class="flower one">✿</div><div class="flower two">✦</div><div class="flower three">✽</div><div class="flower four">❀</div>
+<div class="badge">TYPEWRITER CLUB · 001</div>
+<h1>英打練習<br>版本一</h1>
+<div class="subtitle">ENGLISH TYPING PRACTICE</div>
+<div class="keyboard">
+<div class="top"><span>RETRO KEYBOARD</span><span>QWERTY / EN</span></div>
+<div class="row"><div class="key">Q</div><div class="key">W</div><div class="key">E</div><div class="key">R</div><div class="key">T</div><div class="key">Y</div><div class="key">U</div><div class="key">I</div><div class="key">O</div><div class="key">P</div></div>
+<div class="row"><div class="key wide">A</div><div class="key">S</div><div class="key">D</div><div class="key">F</div><div class="key">G</div><div class="key">H</div><div class="key">J</div><div class="key">K</div><div class="key">L</div><div class="key wide">↵</div></div>
+<div class="row"><div class="key wider">⇧</div><div class="key">Z</div><div class="key">X</div><div class="key">C</div><div class="key">V</div><div class="key">B</div><div class="key">N</div><div class="key">M</div><div class="key wider">⇧</div></div>
+<div class="row"><div class="key wide">Ctrl</div><div class="key">Alt</div><div class="key space"></div><div class="key">Alt</div><div class="key wide">Ctrl</div></div>
+</div>
+<button class="start" id="start">開始遊戲　▶</button>
+<div class="status" id="status">♪ ♪　READY...</div>
+<div class="footer">EST. 1987　·　KEEP CALM &amp; KEEP TYPING</div>
+</main></div>
+<script>
+document.getElementById("start").addEventListener("click",async()=>{
+ const C=window.AudioContext||window.webkitAudioContext,ctx=new C();
+ if(ctx.state==="suspended") await ctx.resume();
+ const now=ctx.currentTime;
+ function beep(f,t){
+  const o=ctx.createOscillator(),g=ctx.createGain();
+  o.type="square";o.frequency.value=f;
+  g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.12,t+.01);g.gain.exponentialRampToValueAtTime(.0001,t+.12);
+  o.connect(g);g.connect(ctx.destination);o.start(t);o.stop(t+.14);
+ }
+ beep(620,now);beep(780,now+.22);
+ const s=document.getElementById("status");s.classList.add("show");
+ setTimeout(()=>{s.classList.remove("show");ctx.close()},900);
+});
+</script>
+</body>
+</html>
